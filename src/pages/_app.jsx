@@ -1,3 +1,4 @@
+import 'src/styles/destyle.css';
 import React from 'react';
 import Head from 'next/head';
 import MyThemeProvider from '../components/MyThemeProvider';
