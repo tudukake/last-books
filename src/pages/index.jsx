@@ -1,4 +1,4 @@
-import { Auth, Typography, Button } from '@supabase/ui';
+import { Auth, Button, IconLogOut } from '@supabase/ui';
 import { LayoutWrapper } from 'src/components/LayoutWrapper';
 import { client } from 'src/libs/supabase';
 
@@ -8,12 +8,14 @@ const Container = (props) => {
   // ログインしている場合
   if (user) {
     return (
-      <>
-        <Typography.Text>login: {user.email}</Typography.Text>
-        <Button block onClick={() => client.auth.signOut()}>
-          Sign Out
-        </Button>
-      </>
+      <Button
+        block
+        size='medium'
+        icon={<IconLogOut />}
+        onClick={() => client.auth.signOut()}
+      >
+        Sign Out
+      </Button>
     );
   }
 

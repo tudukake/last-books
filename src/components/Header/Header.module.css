@@ -1,0 +1,13 @@
+.header {
+  display: flex;
+  height: 60px;
+  background-color: #eeeeee;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+}
+
+.logo {
+  font-size: 20px;
+  font-family: 'Meiryo';
+}
