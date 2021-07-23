@@ -1,10 +1,6 @@
 import { Auth, Typography, Button } from '@supabase/ui';
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_KEY
-);
+import { LayoutWrapper } from 'src/components/LayoutWrapper';
+import { client } from 'src/libs/supabase';
 
 const Container = (props) => {
   const { user } = Auth.useUser();
@@ -23,13 +19,13 @@ const Container = (props) => {
 
 export default function AuthBasic() {
   return (
-    <Auth.UserContextProvider supabaseClient={supabase}>
-      <Container supabaseClient={supabase}>
+    <LayoutWrapper>
         <Auth
           supabaseClient={supabase}
           providers={['google', 'facebook', 'github']}
         />
       </Container>
     </Auth.UserContextProvider>
+    </LayoutWrapper>
   );
 }
