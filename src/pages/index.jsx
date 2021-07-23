@@ -14,7 +14,7 @@ const Container = (props) => {
         icon={<IconLogOut />}
         onClick={() => client.auth.signOut()}
       >
-        Sign Out
+        Sign out
       </Button>
     );
   }

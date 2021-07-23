@@ -1,3 +1,4 @@
+import { Footer } from 'src/components/Footer';
 import { Header } from 'src/components/Header';
 import style from 'src/components/LayoutWrapper/LayoutWrapper.module.css';
 
@@ -6,7 +7,7 @@ export const LayoutWrapper = (props) => {
     <div className={style.wrap}>
       <Header />
       <main>{props.children}</main>
-      footer
+      <Footer />
     </div>
   );
 };
