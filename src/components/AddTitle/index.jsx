@@ -120,6 +120,7 @@ export const AddTitle = () => {
                   color='secondary'
                   startIcon={<CancelOutlined />}
                   style={{ width: 120 }}
+                  onClick={closeModal}
                 >
                   Cancel
                 </Button>
