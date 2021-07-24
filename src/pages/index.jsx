@@ -1,5 +1,7 @@
+import style from 'src/styles/Home.module.css';
 import { Auth, Button, IconLogOut } from '@supabase/ui';
 import { LayoutWrapper } from 'src/components/LayoutWrapper';
+import { MainBooks } from 'src/components/MainBooks';
 import { client } from 'src/libs/supabase';
 
 const Container = (props) => {
@@ -8,14 +10,19 @@ const Container = (props) => {
   // ログインしている場合
   if (user) {
     return (
-      <Button
-        block
-        size='medium'
-        icon={<IconLogOut />}
-        onClick={() => client.auth.signOut()}
-      >
-        Sign out
-      </Button>
+      <div className={style.main}>
+        <MainBooks />
+        <div className={style.logout}>
+          <Button
+            block
+            size='medium'
+            icon={<IconLogOut />}
+            onClick={() => client.auth.signOut()}
+          >
+            Sign out
+          </Button>
+        </div>
+      </div>
     );
   }
 
