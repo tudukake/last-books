@@ -6,6 +6,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { useCallback, useState } from 'react';
 import { client } from 'src/libs/supabase';
+import { BookModal } from 'src/components/BookModal';
 
 const theme = createTheme({
   palette: {
@@ -18,10 +19,25 @@ const theme = createTheme({
 });
 
 export const BookList = (props) => {
-  const handleEdit = useCallback(async () => {
-    console.log(123);
+  const [open, setOpen] = useState(false);
+
+  // モーダルを開く
+  const openModal = useCallback(() => {
+    setOpen(true);
   }, []);
 
+  // モーダルを閉じる
+  const closeModal = useCallback(() => {
+    setOpen(false);
+  }, []);
+
+  // 修正
+  const handleEdit = useCallback(async () => {
+    console.log(123);
+    openModal();
+  }, []);
+
+  // 削除
   const handleDelete = useCallback(async (id, title) => {
     const msg = title + 'を削除しますか？';
     if (!confirm(msg)) return;
@@ -87,6 +103,13 @@ export const BookList = (props) => {
           </div>
         );
       })}
+      <BookModal
+        uid={props.uid}
+        isEdit={true}
+        open={open}
+        openModal={openModal}
+        closeModal={closeModal}
+      />
     </div>
   );
 };
