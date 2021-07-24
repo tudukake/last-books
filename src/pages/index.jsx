@@ -38,7 +38,7 @@ const Home = () => {
           <Auth
             supabaseClient={client}
             providers={['google', 'facebook', 'github']}
-            socialColors={false}
+            socialColors={true}
           />
         </Container>
       </Auth.UserContextProvider>
