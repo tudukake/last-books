@@ -1,9 +1,9 @@
 import { AddTitle } from 'src/components/AddTitle';
 
-export const MainBooks = () => {
+export const MainBooks = (props) => {
   return (
     <div>
-      <AddTitle />
+      <AddTitle uid={props.uid} />
     </div>
   );
 };

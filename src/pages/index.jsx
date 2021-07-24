@@ -11,7 +11,7 @@ const Container = (props) => {
   if (user) {
     return (
       <div className={style.main}>
-        <MainBooks />
+        <MainBooks uid={user.id} />
         <div className={style.logout}>
           <Button
             block

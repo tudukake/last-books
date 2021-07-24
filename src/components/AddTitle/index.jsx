@@ -12,6 +12,7 @@ import AddIcon from '@material-ui/icons/Add';
 import SearchIcon from '@material-ui/icons/Search';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import CancelOutlined from '@material-ui/icons/CancelOutlined';
+import { client } from 'src/libs/supabase';
 
 const theme = createTheme({
   palette: {
@@ -29,19 +30,7 @@ const theme = createTheme({
   },
 });
 
-export const AddTitle = () => {
-  const [open, setOpen] = useState(false);
-
-  // モーダルを開く
-  const openModal = useCallback(() => {
-    setOpen(true);
-  }, []);
-
-  // モーダルを閉じる
-  const closeModal = useCallback(() => {
-    setOpen(false);
-  }, []);
-
+export const AddTitle = (props) => {
   // 五十音図
   const NAVI = [
     'ALL',
@@ -56,6 +45,47 @@ export const AddTitle = () => {
     'ら',
     'わ',
   ];
+
+  const [open, setOpen] = useState(false);
+  const [isbn, setIsbn] = useState('');
+  const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
+  const [posession, setPosession] = useState('');
+
+  // モーダルを開く
+  const openModal = useCallback(() => {
+    setOpen(true);
+  }, []);
+
+  // モーダルを閉じる
+  const closeModal = useCallback(() => {
+    setOpen(false);
+  }, []);
+
+  // 本追加
+  const addBook = useCallback(async () => {
+    // タイトル未入力は無視
+    if (!title) return;
+
+    // supabaseに登録
+    const { data, error } = await client.from('books').insert([
+      {
+        uid: props.uid,
+        isbn: isbn,
+        title: title,
+        author: author,
+        possession: posession,
+      },
+    ]);
+
+    if (error) {
+      alert(error);
+    } else {
+      if (data) {
+        closeModal();
+      }
+    }
+  });
 
   return (
     <div>
@@ -91,18 +121,28 @@ export const AddTitle = () => {
                 label='ISBN'
                 variant='outlined'
                 size='small'
+                value={isbn}
+                onChange={(e) => {
+                  setIsbn(e.target.value);
+                }}
               />
               <TextField
                 id='title'
                 label='タイトル'
                 variant='outlined'
                 size='small'
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                }}
               />
               <TextField
                 id='author'
                 label='作家'
                 variant='outlined'
                 size='small'
+                onChange={(e) => {
+                  setAuthor(e.target.value);
+                }}
               />
               <TextField
                 id='posession'
@@ -111,6 +151,9 @@ export const AddTitle = () => {
                 variant='outlined'
                 size='small'
                 style={{ width: 120 }}
+                onChange={(e) => {
+                  setPosession(e.target.value);
+                }}
               />
             </div>
             <div className={style.btns}>
@@ -129,6 +172,7 @@ export const AddTitle = () => {
                   color='primary'
                   startIcon={<PostAddIcon />}
                   style={{ width: 120 }}
+                  onClick={addBook}
                 >
                   追加
                 </Button>
