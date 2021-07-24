@@ -1,0 +1,33 @@
+.box_list {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card {
+  border-bottom: 1px solid #ddd;
+  padding: 8px 8px 16px 8px;
+  display: flex;
+  gap: 8px;
+}
+
+.book_img {
+  border: 1px solid #eee;
+}
+
+.book_info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.book_title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.btns {
+  display: flex;
+  gap: 8px;
+}

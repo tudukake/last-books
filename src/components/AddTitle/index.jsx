@@ -50,7 +50,7 @@ export const AddTitle = (props) => {
   const [isbn, setIsbn] = useState('');
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
-  const [posession, setPosession] = useState('');
+  const [possession, setPossession] = useState('');
 
   // モーダルを開く
   const openModal = useCallback(() => {
@@ -68,13 +68,16 @@ export const AddTitle = (props) => {
     if (!title) return;
 
     // supabaseに登録
+    const postIsbn = isbn === '' ? null : isbn;
+    const postAuthor = author === '' ? null : author;
+    const postPossession = possession === '' ? null : possession;
     const { data, error } = await client.from('books').insert([
       {
         uid: props.uid,
-        isbn: isbn,
+        isbn: postIsbn,
         title: title,
-        author: author,
-        possession: posession,
+        author: postAuthor,
+        possession: postPossession,
       },
     ]);
 
@@ -83,6 +86,9 @@ export const AddTitle = (props) => {
     } else {
       if (data) {
         closeModal();
+
+        // 一覧に追加
+        props.addBook(data);
       }
     }
   });
@@ -145,14 +151,14 @@ export const AddTitle = (props) => {
                 }}
               />
               <TextField
-                id='posession'
+                id='possession'
                 label='所持巻数'
                 type='number'
                 variant='outlined'
                 size='small'
                 style={{ width: 120 }}
                 onChange={(e) => {
-                  setPosession(e.target.value);
+                  setPossession(e.target.value);
                 }}
               />
             </div>
