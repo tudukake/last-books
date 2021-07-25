@@ -138,7 +138,7 @@ export const BookModal = (props) => {
               />
               <TextField
                 id='author'
-                label='作家'
+                label='著者'
                 variant='outlined'
                 size='small'
                 value={author}

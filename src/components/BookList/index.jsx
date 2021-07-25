@@ -74,7 +74,7 @@ export const BookList = (props) => {
             </div>
             <div className={style.book_info}>
               <div className={style.book_title}>{book.title}</div>
-              <div>作家：{book.author}</div>
+              <div>著者：{book.author}</div>
               <div>巻数：{book.volume}</div>
               <div>所持：{book.possession}</div>
               <div>ISBN：{book.isbn}</div>
