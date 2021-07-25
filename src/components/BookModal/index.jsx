@@ -15,6 +15,7 @@ import PostAddIcon from '@material-ui/icons/PostAdd';
 import CancelOutlined from '@material-ui/icons/CancelOutlined';
 import { client } from 'src/libs/supabase';
 import { useEffect } from 'react';
+import { SearchImage } from 'src/components/SearchImage';
 
 const theme = createTheme({
   palette: {
@@ -34,15 +35,50 @@ const theme = createTheme({
 
 export const BookModal = (props) => {
   const [radioVal, setRadioVal] = useState('title');
+  const [isLoading, setIsLoading] = useState(false);
+  const [searchTxt, setSearchTxt] = useState('');
+  const [searchList, setSearchList] = useState([]);
   const [id, setId] = useState(null);
   const [isbn, setIsbn] = useState('');
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [possession, setPossession] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
 
   // 検索用ラジオボタン
   const handleRadioChange = (e) => {
     setRadioVal(e.target.value);
+  };
+
+  // 検索
+  const handleSearch = useCallback(async () => {
+    if (!searchTxt) return;
+
+    setIsLoading(true);
+    const cond = radioVal + '=' + searchTxt;
+    const res = await fetch('/api/rakuten?' + cond);
+    const resultList = await res.json();
+
+    if (resultList) {
+      if (resultList.size == 0) {
+        alert('Not found the books.');
+      } else {
+        setSearchList(resultList.data);
+      }
+      setIsLoading(false);
+    }
+  });
+
+  // 検索結果を反映
+  const setSelectBook = (book) => {
+    const searchIsbn = book.isbn === '' ? null : book.isbn;
+    const searchTitle = book.title === '' ? null : book.title;
+    const searchAuthor = book.author === '' ? null : book.author;
+    const searchImageUrl = book.imageUrl === '' ? null : book.imageUrl;
+    setIsbn(searchIsbn);
+    setTitle(searchTitle);
+    setAuthor(searchAuthor);
+    setImageUrl(searchImageUrl);
   };
 
   // 追加 Or 修正
@@ -57,6 +93,7 @@ export const BookModal = (props) => {
     const postIsbn = isbn === '' ? null : isbn;
     const postAuthor = author === '' ? null : author;
     const postPossession = possession === '' ? null : possession;
+    const postImageUrl = imageUrl === '' ? null : imageUrl;
 
     // 登録
     let upsertData = {
@@ -65,6 +102,7 @@ export const BookModal = (props) => {
       title: title,
       author: postAuthor,
       possession: postPossession,
+      img_url: postImageUrl,
     };
     if (props.isEdit) {
       upsertData = { id: id, ...upsertData };
@@ -121,12 +159,14 @@ export const BookModal = (props) => {
                 <FormControlLabel
                   value='title'
                   control={<Radio />}
-                  label='タイトルで検索'
+                  label={
+                    <span className={style.labelRoot}>タイトルで検索</span>
+                  }
                 />
                 <FormControlLabel
                   value='author'
                   control={<Radio />}
-                  label='著者で検索'
+                  label={<span className={style.labelRoot}>著者で検索</span>}
                 />
               </RadioGroup>
             </div>
@@ -139,11 +179,23 @@ export const BookModal = (props) => {
                     type='search'
                     size='small'
                     style={{ width: 250 }}
+                    value={searchTxt}
+                    onChange={(e) => {
+                      setSearchTxt(e.target.value);
+                    }}
                   />
                 </div>
                 <div className={style.search_icon}>
-                  <SearchIcon fontSize='large' />
+                  <SearchIcon fontSize='large' onClick={handleSearch} />
                 </div>
+              </div>
+              <div>
+                <SearchImage
+                  isLoading={isLoading}
+                  searchList={searchList}
+                  setSearchList={setSearchList}
+                  setSelectBook={setSelectBook}
+                />
               </div>
               <TextField
                 id='isbn'

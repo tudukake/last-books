@@ -65,19 +65,21 @@ export const BookList = (props) => {
                 <Image
                   src={book.img_url}
                   alt='thumbnail'
-                  width={120}
+                  width={100}
                   height={150}
                 />
               ) : (
-                <Image src={noImage} alt='thumbnail' width={120} height={150} />
+                <Image src={noImage} alt='thumbnail' width={100} height={150} />
               )}
             </div>
             <div className={style.book_info}>
-              <div className={style.book_title}>{book.title}</div>
-              <div>著者：{book.author}</div>
-              <div>巻数：{book.volume}</div>
-              <div>所持：{book.possession}</div>
-              <div>ISBN：{book.isbn}</div>
+              <div>
+                <div className={style.book_title}>{book.title}</div>
+                <div>著者：{book.author}</div>
+                {/* <div>巻数：{book.volume}</div> */}
+                <div>所持：{book.possession}</div>
+                <div>ISBN：{book.isbn}</div>
+              </div>
               <div className={style.btns}>
                 <ThemeProvider theme={theme}>
                   <Button
