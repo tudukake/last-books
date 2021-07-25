@@ -2,7 +2,10 @@ import style from 'src/components/BookModal/BookModal.module.css';
 import {
   Button,
   createTheme,
+  FormControlLabel,
   Modal,
+  Radio,
+  RadioGroup,
   TextField,
   ThemeProvider,
 } from '@material-ui/core';
@@ -30,11 +33,17 @@ const theme = createTheme({
 });
 
 export const BookModal = (props) => {
+  const [radioVal, setRadioVal] = useState('title');
   const [id, setId] = useState(null);
   const [isbn, setIsbn] = useState('');
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [possession, setPossession] = useState('');
+
+  // 検索用ラジオボタン
+  const handleRadioChange = (e) => {
+    setRadioVal(e.target.value);
+  };
 
   // 追加 Or 修正
   const addEditStr = props.isEdit ? '修正' : '追加';
@@ -101,6 +110,26 @@ export const BookModal = (props) => {
         >
           <div className={style.modal_style}>
             <h1 className={style.modal_title}>{addEditStr}</h1>
+            <div className={style.radioTarget}>
+              <RadioGroup
+                row
+                aria-label='search_target'
+                name='target'
+                value={radioVal}
+                onChange={handleRadioChange}
+              >
+                <FormControlLabel
+                  value='title'
+                  control={<Radio />}
+                  label='タイトルで検索'
+                />
+                <FormControlLabel
+                  value='author'
+                  control={<Radio />}
+                  label='著者で検索'
+                />
+              </RadioGroup>
+            </div>
             <div className={style.inps}>
               <div className={style.search}>
                 <div>
