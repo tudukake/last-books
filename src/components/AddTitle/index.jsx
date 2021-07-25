@@ -32,37 +32,6 @@ export const AddTitle = (props) => {
     setOpen(false);
   }, []);
 
-  // 本追加
-  const addBook = useCallback(async () => {
-    // タイトル未入力は無視
-    if (!title) return;
-
-    // supabaseに登録
-    const postIsbn = isbn === '' ? null : isbn;
-    const postAuthor = author === '' ? null : author;
-    const postPossession = possession === '' ? null : possession;
-    const { data, error } = await client.from('books').insert([
-      {
-        uid: props.uid,
-        isbn: postIsbn,
-        title: title,
-        author: postAuthor,
-        possession: postPossession,
-      },
-    ]);
-
-    if (error) {
-      alert(error);
-    } else {
-      if (data) {
-        closeModal();
-
-        // 一覧に追加
-        props.addBook(data);
-      }
-    }
-  });
-
   return (
     <div>
       <div className={style.add_navi}>
@@ -87,7 +56,7 @@ export const AddTitle = (props) => {
         open={open}
         openModal={openModal}
         closeModal={closeModal}
-        addBook={props.addBook}
+        refresh={props.refresh}
       />
     </div>
   );

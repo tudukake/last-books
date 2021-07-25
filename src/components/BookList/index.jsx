@@ -20,6 +20,7 @@ const theme = createTheme({
 
 export const BookList = (props) => {
   const [open, setOpen] = useState(false);
+  const [editBook, setEditBook] = useState('');
 
   // モーダルを開く
   const openModal = useCallback(() => {
@@ -32,10 +33,14 @@ export const BookList = (props) => {
   }, []);
 
   // 修正
-  const handleEdit = useCallback(async () => {
-    console.log(123);
+  const handleEdit = useCallback(async (id) => {
+    const book = props.books.find((book) => {
+      return book.id == id;
+    });
+
+    setEditBook(book);
     openModal();
-  }, []);
+  });
 
   // 削除
   const handleDelete = useCallback(async (id, title) => {
@@ -47,7 +52,7 @@ export const BookList = (props) => {
       alert(error);
     }
 
-    props.delBook();
+    props.refresh();
   }, []);
 
   return (
@@ -81,7 +86,7 @@ export const BookList = (props) => {
                     startIcon={<EditIcon />}
                     size='small'
                     onClick={() => {
-                      handleEdit(book.title);
+                      handleEdit(book.id);
                     }}
                   >
                     修正
@@ -109,6 +114,8 @@ export const BookList = (props) => {
         open={open}
         openModal={openModal}
         closeModal={closeModal}
+        editBook={editBook}
+        refresh={props.refresh}
       />
     </div>
   );

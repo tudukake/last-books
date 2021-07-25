@@ -11,6 +11,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import CancelOutlined from '@material-ui/icons/CancelOutlined';
 import { client } from 'src/libs/supabase';
+import { useEffect } from 'react';
 
 const theme = createTheme({
   palette: {
@@ -29,6 +30,7 @@ const theme = createTheme({
 });
 
 export const BookModal = (props) => {
+  const [id, setId] = useState(null);
   const [isbn, setIsbn] = useState('');
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
@@ -37,8 +39,8 @@ export const BookModal = (props) => {
   // 追加 Or 修正
   const addEditStr = props.isEdit ? '修正' : '追加';
 
-  // 本追加
-  const insertBook = useCallback(async () => {
+  // 本追加 Or 修正
+  const upsertBook = useCallback(async () => {
     // タイトル未入力は無視
     if (!title) return;
 
@@ -48,27 +50,45 @@ export const BookModal = (props) => {
     const postPossession = possession === '' ? null : possession;
 
     // 登録
-    const { data, error } = await client.from('books').insert([
-      {
-        uid: props.uid,
-        isbn: postIsbn,
-        title: title,
-        author: postAuthor,
-        possession: postPossession,
-      },
-    ]);
+    let upsertData = {
+      uid: props.uid,
+      isbn: postIsbn,
+      title: title,
+      author: postAuthor,
+      possession: postPossession,
+    };
+    if (props.isEdit) {
+      upsertData = { id: id, ...upsertData };
+    }
+
+    const { data, error } = await client.from('books').upsert([upsertData]);
 
     if (error) {
       alert(error);
     } else {
       if (data) {
         props.closeModal();
-
-        // 一覧に追加
-        props.addBook(data);
+        props.refresh();
       }
     }
   });
+
+  useEffect(() => {
+    if (!props.editBook) return;
+
+    const editIsbn = props.editBook.isbn ? props.editBook.isbn : '';
+    const editTitle = props.editBook.title ? props.editBook.title : '';
+    const editAuthor = props.editBook.author ? props.editBook.author : '';
+    const editPossession = props.editBook.possession
+      ? props.editBook.possession
+      : '';
+
+    setId(props.editBook.id);
+    setIsbn(editIsbn);
+    setTitle(editTitle);
+    setAuthor(editAuthor);
+    setPossession(editPossession);
+  }, [props.editBook]);
 
   return (
     <div>
@@ -111,6 +131,7 @@ export const BookModal = (props) => {
                 label='タイトル'
                 variant='outlined'
                 size='small'
+                value={title}
                 onChange={(e) => {
                   setTitle(e.target.value);
                 }}
@@ -120,6 +141,7 @@ export const BookModal = (props) => {
                 label='作家'
                 variant='outlined'
                 size='small'
+                value={author}
                 onChange={(e) => {
                   setAuthor(e.target.value);
                 }}
@@ -130,6 +152,7 @@ export const BookModal = (props) => {
                 type='number'
                 variant='outlined'
                 size='small'
+                value={possession}
                 style={{ width: 120 }}
                 onChange={(e) => {
                   setPossession(e.target.value);
@@ -152,7 +175,7 @@ export const BookModal = (props) => {
                   color='primary'
                   startIcon={<PostAddIcon />}
                   style={{ width: 120 }}
-                  onClick={insertBook}
+                  onClick={upsertBook}
                 >
                   {addEditStr}
                 </Button>

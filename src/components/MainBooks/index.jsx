@@ -24,19 +24,19 @@ export const MainBooks = (props) => {
     getBookList();
   }, []);
 
+  const refresh = () => {
+    getBookList();
+  };
+
   const addBook = (data) => {
     // 追加した本は一覧の先頭に追加
     setBooks((prev) => [...data, ...prev]);
   };
 
-  const delBook = () => {
-    getBookList();
-  };
-
   return (
     <div>
-      <AddTitle uid={props.uid} addBook={addBook} />
-      <BookList uid={props.uid} books={books} delBook={delBook} />
+      <AddTitle uid={props.uid} refresh={refresh} />
+      <BookList uid={props.uid} books={books} refresh={refresh} />
     </div>
   );
 };
