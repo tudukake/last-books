@@ -27,7 +27,7 @@ const Container = (props) => {
   }
 
   // ログインしていない場合
-  return props.children;
+  return <>{props.children}</>;
 };
 
 const Home = () => {

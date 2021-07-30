@@ -28,11 +28,6 @@ export const MainBooks = (props) => {
     getBookList();
   };
 
-  const addBook = (data) => {
-    // 追加した本は一覧の先頭に追加
-    setBooks((prev) => [...data, ...prev]);
-  };
-
   return (
     <div>
       <AddTitle uid={props.uid} refresh={refresh} />
