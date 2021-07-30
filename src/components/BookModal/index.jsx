@@ -129,12 +129,14 @@ export const BookModal = (props) => {
     const editPossession = props.editBook.possession
       ? props.editBook.possession
       : '';
+    const editImgUrl = props.editBook.img_url ? props.editBook.img_url : '';
 
     setId(props.editBook.id);
     setIsbn(editIsbn);
     setTitle(editTitle);
     setAuthor(editAuthor);
     setPossession(editPossession);
+    setImageUrl(editImgUrl);
   }, [props.editBook]);
 
   return (
