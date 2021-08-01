@@ -13,9 +13,11 @@ import { useCallback, useState } from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import CancelOutlined from '@material-ui/icons/CancelOutlined';
+import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import { client } from 'src/libs/supabase';
 import { useEffect } from 'react';
 import { SearchImage } from 'src/components/SearchImage';
+import { ReadIsbn } from 'src/components/ReadIsbn';
 
 const theme = createTheme({
   palette: {
@@ -44,6 +46,7 @@ export const BookModal = (props) => {
   const [author, setAuthor] = useState('');
   const [possession, setPossession] = useState('');
   const [imageUrl, setImageUrl] = useState('');
+  const [isCamera, setIsCamera] = useState(false);
 
   // 検索用ラジオボタン
   const handleRadioChange = (e) => {
@@ -68,6 +71,11 @@ export const BookModal = (props) => {
       setIsLoading(false);
     }
   }, [searchTxt]);
+
+  // カメラでISBN
+  const handleCamera = useCallback(async () => {
+    setIsCamera((prev) => !prev);
+  }, []);
 
   // ISBN検索（OpenBd）
   const searchIsbn = useCallback(
@@ -199,7 +207,7 @@ export const BookModal = (props) => {
                     label='検索'
                     type='search'
                     size='small'
-                    style={{ width: 250 }}
+                    style={{ width: 215 }}
                     value={searchTxt}
                     onChange={(e) => {
                       setSearchTxt(e.target.value);
@@ -209,6 +217,9 @@ export const BookModal = (props) => {
                 <div className={style.search_icon}>
                   <SearchIcon fontSize='large' onClick={handleSearch} />
                 </div>
+                <div className={style.search_icon}>
+                  <CameraAltIcon fontSize='large' onClick={handleCamera} />
+                </div>
               </div>
               <div>
                 <SearchImage
@@ -217,6 +228,9 @@ export const BookModal = (props) => {
                   setSearchList={setSearchList}
                   setSelectBook={setSelectBook}
                 />
+              </div>
+              <div>
+                <ReadIsbn isCamera={isCamera} setIsCamera={setIsCamera} />
               </div>
               <TextField
                 id='isbn'

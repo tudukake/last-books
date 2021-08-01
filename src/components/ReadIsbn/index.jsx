@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createWorker } from 'tesseract.js';
 
-export const ReadIsbn = () => {
+export const ReadIsbn = (props) => {
   const [text, setText] = useState('');
 
   const findOrCreateCaptureCanvas = () => {
@@ -9,7 +9,7 @@ export const ReadIsbn = () => {
     if (!captureCanvas) {
       captureCanvas = document.createElement('canvas');
       captureCanvas.width = 300;
-      captureCanvas.height = 180;
+      captureCanvas.height = 225;
       captureCanvas.id = 'capture_canvas';
     }
     return captureCanvas;
@@ -39,7 +39,7 @@ export const ReadIsbn = () => {
 
     const context = videoCanvas.getContext('2d');
     context.drawImage(video, 0, 0, videoCanvas.width, videoCanvas.height);
-    context.strokeRect(20, 40, 250, 90);
+    context.strokeRect(20, 40, 250, 40);
   };
 
   const startCamera = async () => {
@@ -47,7 +47,7 @@ export const ReadIsbn = () => {
       audio: false,
       video: {
         width: 300,
-        height: 180,
+        height: 225,
         facingMode: 'environment',
       },
     };
@@ -61,7 +61,7 @@ export const ReadIsbn = () => {
 
     const videoCanvas = document.createElement('canvas');
     videoCanvas.width = 300;
-    videoCanvas.height = 180;
+    videoCanvas.height = 225;
     videoCanvas.id = 'video_canvas';
     document.getElementById('vc').appendChild(videoCanvas);
 
@@ -82,27 +82,21 @@ export const ReadIsbn = () => {
 
     const captureCanvas = findOrCreateCaptureCanvas();
     const context = captureCanvas.getContext('2d');
-    const c = context.drawImage(
-      video,
-      0,
-      0,
-      captureCanvas.width,
-      captureCanvas.height
-    );
+    context.drawImage(video, 0, 0, captureCanvas.width, captureCanvas.height);
     const url = captureCanvas.toDataURL('image/png');
-    console.log(url);
 
     // canvasから文字認識
     const {
       data: { text },
     } = await worker.recognize(url);
-    console.log(text);
+
     const regex = /[0-9]{13}/;
     const result = text.match(regex);
-    console.log(result);
+
     if (result) {
       setText(text);
-      video_canvas.remove();
+      videoCanvas.remove();
+      props.setIsCamera(false);
     }
   };
 
@@ -116,17 +110,24 @@ export const ReadIsbn = () => {
     });
     setInterval(() => {
       captureCamera(worker);
-    }, 8000);
+    }, 2000);
   };
 
   useEffect(() => {
-    requestAnimationFrame(updateVideoCanvas);
-    initWorker();
-  }, []);
+    if (props.isCamera) {
+      requestAnimationFrame(updateVideoCanvas);
+      initWorker();
+      startCamera();
+    } else {
+      const videoCanvas = document.getElementById('video_canvas');
+      if (videoCanvas) {
+        videoCanvas.remove();
+      }
+    }
+  }, [props.isCamera]);
 
   return (
-    <div id='vc'>
-      <input type='button' value='camera' onClick={startCamera} />
+    <div id='vc' style={{ textAlign: 'center' }}>
       <pre>
         <h1>{text}</h1>
       </pre>
