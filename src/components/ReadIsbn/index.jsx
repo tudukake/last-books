@@ -2,9 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { createWorker } from 'tesseract.js';
 
 export const ReadIsbn = () => {
-  // const [stream, setStream] = useState(null);
-  // const [worker, setWorker] = useState(null);
-  // const videoRef = useRef(null);
   const [text, setText] = useState('');
 
   const findOrCreateCaptureCanvas = () => {
@@ -12,7 +9,7 @@ export const ReadIsbn = () => {
     if (!captureCanvas) {
       captureCanvas = document.createElement('canvas');
       captureCanvas.width = 300;
-      captureCanvas.height = 150;
+      captureCanvas.height = 180;
       captureCanvas.id = 'capture_canvas';
     }
     return captureCanvas;
@@ -42,7 +39,7 @@ export const ReadIsbn = () => {
 
     const context = videoCanvas.getContext('2d');
     context.drawImage(video, 0, 0, videoCanvas.width, videoCanvas.height);
-    context.strokeRect(110, 55, 180, 90);
+    context.strokeRect(20, 40, 250, 90);
   };
 
   const startCamera = async () => {
@@ -50,7 +47,7 @@ export const ReadIsbn = () => {
       audio: false,
       video: {
         width: 300,
-        height: 150,
+        height: 180,
         facingMode: 'environment',
       },
     };
@@ -64,7 +61,7 @@ export const ReadIsbn = () => {
 
     const videoCanvas = document.createElement('canvas');
     videoCanvas.width = 300;
-    videoCanvas.height = 150;
+    videoCanvas.height = 180;
     videoCanvas.id = 'video_canvas';
     document.getElementById('vc').appendChild(videoCanvas);
 
@@ -117,51 +114,10 @@ export const ReadIsbn = () => {
     await worker.setParameters({
       tessedit_char_whitelist: '0123456789',
     });
-    // setWorker(worker);
     setInterval(() => {
       captureCamera(worker);
     }, 8000);
   };
-
-  /*
-  const initStream = async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      audio: false,
-      video: { width: 500, height: 300 },
-    });
-    setStream(stream);
-  };
-
-  const onRecognizeText = () => {
-    const timerId = setInterval(async () => {
-      if (videoRef.current === null || !worker) return;
-
-      const c = document.createElement('canvas');
-      c.width = 500;
-      c.height = 300;
-      c.getContext('2d')?.drawImage(videoRef.current, 0, 0, 500, 300);
-
-      // canvasから文字認識
-      const {
-        data: { text },
-      } = await worker.recognize(c);
-      setText(text);
-    }, 2000);
-
-    return () => clearInterval(timerId);
-  };
-
-  // useEffect(() => {
-  //   if (!worker) initWorker();
-  //   if (!stream) initStream();
-
-  //   if (worker && stream && videoRef.current !== null) {
-  //     videoRef.current.srcObject = stream;
-  //     const clear = onRecognizeText();
-  //     return clear;
-  //   }
-  // }, [worker, stream]);
-*/
 
   useEffect(() => {
     requestAnimationFrame(updateVideoCanvas);
@@ -170,7 +126,6 @@ export const ReadIsbn = () => {
 
   return (
     <div id='vc'>
-      {/* <video ref={videoRef} autoPlay /> */}
       <input type='button' value='camera' onClick={startCamera} />
       <pre>
         <h1>{text}</h1>
