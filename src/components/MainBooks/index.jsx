@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useCallback } from 'react';
 import { AddTitle } from 'src/components/AddTitle';
 import { BookList } from 'src/components/BookList';
+import { ReadIsbn } from 'src/components/ReadIsbn';
 import { client } from 'src/libs/supabase';
 
 export const MainBooks = (props) => {
@@ -30,6 +31,7 @@ export const MainBooks = (props) => {
 
   return (
     <div>
+      <ReadIsbn />
       <AddTitle uid={props.uid} refresh={refresh} />
       <BookList uid={props.uid} books={books} refresh={refresh} />
     </div>

@@ -67,7 +67,26 @@ export const BookModal = (props) => {
       }
       setIsLoading(false);
     }
-  });
+  }, [searchTxt]);
+
+  // ISBN検索（OpenBd）
+  const searchIsbn = useCallback(
+    async (isbn) => {
+      if (!isbn) return;
+      const res = await fetch('https://api.openbd.jp/v1/get?isbn=' + isbn);
+      const openbd = await res.json();
+      if (!openbd) {
+        alert('Could not get the data from openBD.');
+        return;
+      }
+      if (openbd[0] == null) {
+        alert('Invalid ISBN number. Please check.');
+        return;
+      }
+      const imageUrl = 'https://cover.openbd.jp/' + isbn + '.jpg';
+    },
+    [isbn]
+  );
 
   // 検索結果を反映
   const setSelectBook = (book) => {
