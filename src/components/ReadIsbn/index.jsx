@@ -46,7 +46,7 @@ export const ReadIsbn = (props) => {
     const constraints = {
       audio: false,
       video: {
-        width: 300,
+        width: 225,
         height: 225,
         facingMode: 'environment',
       },
