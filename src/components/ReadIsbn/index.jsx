@@ -8,8 +8,8 @@ export const ReadIsbn = (props) => {
     let captureCanvas = document.getElementById('capture_canvas');
     if (!captureCanvas) {
       captureCanvas = document.createElement('canvas');
-      captureCanvas.width = 225;
-      captureCanvas.height = 225;
+      captureCanvas.width = 250;
+      captureCanvas.height = 250;
       captureCanvas.id = 'capture_canvas';
     }
     return captureCanvas;
@@ -29,7 +29,7 @@ export const ReadIsbn = (props) => {
   };
 
   const updateVideoCanvas = () => {
-    requestAnimationFrame(updateVideoCanvas);
+    // requestAnimationFrame(updateVideoCanvas);
 
     const video = document.querySelector('video');
     if (!video) return;
@@ -39,15 +39,15 @@ export const ReadIsbn = (props) => {
 
     const context = videoCanvas.getContext('2d');
     context.drawImage(video, 0, 0, videoCanvas.width, videoCanvas.height);
-    context.strokeRect(20, 40, 250, 40);
+    context.strokeRect(10, 80, 230, 40);
   };
 
   const startCamera = async () => {
     const constraints = {
       audio: false,
       video: {
-        width: 225,
-        height: 225,
+        width: 250,
+        height: 250,
         facingMode: 'environment',
       },
     };
@@ -60,8 +60,8 @@ export const ReadIsbn = (props) => {
     const video = findOrCreateVideoTag();
 
     const videoCanvas = document.createElement('canvas');
-    videoCanvas.width = 225;
-    videoCanvas.height = 225;
+    videoCanvas.width = 250;
+    videoCanvas.height = 250;
     videoCanvas.id = 'video_canvas';
     document.getElementById('vc').appendChild(videoCanvas);
 
@@ -115,7 +115,10 @@ export const ReadIsbn = (props) => {
 
   useEffect(() => {
     if (props.isCamera) {
-      requestAnimationFrame(updateVideoCanvas);
+      // requestAnimationFrame(updateVideoCanvas);
+      setInterval(() => {
+        updateVideoCanvas();
+      }, 100);
       initWorker();
       startCamera();
     } else {
