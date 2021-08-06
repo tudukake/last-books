@@ -8,7 +8,7 @@ export const ReadIsbn = (props) => {
     let captureCanvas = document.getElementById('capture_canvas');
     if (!captureCanvas) {
       captureCanvas = document.createElement('canvas');
-      captureCanvas.width = 300;
+      captureCanvas.width = 225;
       captureCanvas.height = 225;
       captureCanvas.id = 'capture_canvas';
     }
@@ -60,7 +60,7 @@ export const ReadIsbn = (props) => {
     const video = findOrCreateVideoTag();
 
     const videoCanvas = document.createElement('canvas');
-    videoCanvas.width = 300;
+    videoCanvas.width = 225;
     videoCanvas.height = 225;
     videoCanvas.id = 'video_canvas';
     document.getElementById('vc').appendChild(videoCanvas);
