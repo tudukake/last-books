@@ -29,7 +29,7 @@ export const ReadIsbn = (props) => {
   };
 
   const updateVideoCanvas = () => {
-    // requestAnimationFrame(updateVideoCanvas);
+    requestAnimationFrame(updateVideoCanvas);
 
     const video = document.querySelector('video');
     if (!video) return;
@@ -115,10 +115,10 @@ export const ReadIsbn = (props) => {
 
   useEffect(() => {
     if (props.isCamera) {
-      // requestAnimationFrame(updateVideoCanvas);
-      setInterval(() => {
-        updateVideoCanvas();
-      }, 100);
+      requestAnimationFrame(updateVideoCanvas);
+      // setInterval(() => {
+      //   updateVideoCanvas();
+      // }, 100);
       initWorker();
       startCamera();
     } else {
@@ -127,7 +127,7 @@ export const ReadIsbn = (props) => {
         videoCanvas.remove();
       }
     }
-  }, [props.isCamera]);
+  });
 
   return (
     <div id='vc' style={{ textAlign: 'center' }}>
