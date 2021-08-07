@@ -20,7 +20,7 @@ export const ReadIsbn = (props) => {
     if (!video) {
       video = document.createElement('video');
       video.setAttribute('contrals', '');
-      video.setAttribute('autoplay', '');
+      video.setAttribute('autoplay', 'true');
       video.setAttribute('playsinline', '');
       video.setAttribute('style', 'display:none');
       document.getElementById('vc').appendChild(video);
@@ -127,7 +127,7 @@ export const ReadIsbn = (props) => {
         videoCanvas.remove();
       }
     }
-  });
+  }, [props.isCamera]);
 
   return (
     <div id='vc' style={{ textAlign: 'center' }}>
