@@ -114,8 +114,8 @@ export const ReadIsbn = (props) => {
   };
 
   useEffect(() => {
+    requestAnimationFrame(updateVideoCanvas);
     if (props.isCamera) {
-      requestAnimationFrame(updateVideoCanvas);
       // setInterval(() => {
       //   updateVideoCanvas();
       // }, 100);
