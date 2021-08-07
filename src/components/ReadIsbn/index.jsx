@@ -22,7 +22,7 @@ export const ReadIsbn = (props) => {
       video.setAttribute('contrals', '');
       video.setAttribute('autoplay', 'true');
       video.setAttribute('playsinline', '');
-      video.setAttribute('style', 'display:none');
+      // video.setAttribute('style', 'display:none');
       document.getElementById('vc').appendChild(video);
     }
     return video;
@@ -114,7 +114,7 @@ export const ReadIsbn = (props) => {
   };
 
   useEffect(() => {
-    requestAnimationFrame(updateVideoCanvas);
+    // const callbackId = requestAnimationFrame(updateVideoCanvas);
     if (props.isCamera) {
       // setInterval(() => {
       //   updateVideoCanvas();
@@ -122,6 +122,7 @@ export const ReadIsbn = (props) => {
       initWorker();
       startCamera();
     } else {
+      // cancelAnimationFrame(callbackId);
       const videoCanvas = document.getElementById('video_canvas');
       if (videoCanvas) {
         videoCanvas.remove();
