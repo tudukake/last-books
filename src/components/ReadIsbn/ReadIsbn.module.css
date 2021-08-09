@@ -1,0 +1,13 @@
+.choice {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.isbn {
+  text-align: left;
+  padding: 4px;
+  border-bottom: 1px solid #aaa;
+  width: 120px;
+}

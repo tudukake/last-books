@@ -1,8 +1,15 @@
+import style from 'src/components/ReadIsbn/ReadIsbn.module.css';
 import { useEffect, useState } from 'react';
 import { createWorker } from 'tesseract.js';
+import { Button } from '@material-ui/core';
 
 export const ReadIsbn = (props) => {
   const [text, setText] = useState('');
+  const [isbns, setIsbns] = useState([]);
+
+  const handleChoice = (id) => {
+    console.log(id);
+  };
 
   const findOrCreateCaptureCanvas = () => {
     let captureCanvas = document.getElementById('capture_canvas');
@@ -63,6 +70,7 @@ export const ReadIsbn = (props) => {
     videoCanvas.width = 250;
     videoCanvas.height = 250;
     videoCanvas.id = 'video_canvas';
+    videoCanvas.setAttribute('style', 'display:none');
     document.getElementById('vc').appendChild(videoCanvas);
 
     try {
@@ -90,14 +98,28 @@ export const ReadIsbn = (props) => {
       data: { text },
     } = await worker.recognize(url);
 
-    const regex = /[0-9]{13}/;
-    const result = text.match(regex);
-
-    if (result) {
-      setText(text);
+    const textIsbn = choiceIsbn(text);
+    console.log(textIsbn);
+    if (textIsbn.length) {
+      setIsbns([...textIsbn]);
       videoCanvas.remove();
       props.setIsCamera(false);
     }
+  };
+
+  const choiceIsbn = (text) => {
+    // 複数読み取った場合を考慮して分割
+    const isbns = text.split('\n');
+
+    // 桁数チェック
+    const filterIsbn = isbns.filter((isbn) => {
+      const trimIsbn = isbn.replaceAll(' ', '');
+      if (trimIsbn.length === 10 || trimIsbn.length === 13) {
+        return trimIsbn;
+      }
+    });
+
+    return filterIsbn;
   };
 
   const initWorker = async () => {
@@ -108,18 +130,17 @@ export const ReadIsbn = (props) => {
     await worker.setParameters({
       tessedit_char_whitelist: '0123456789',
     });
-    setInterval(() => {
-      captureCamera(worker);
-    }, 2000);
+    return worker;
   };
 
-  useEffect(() => {
+  useEffect(async () => {
+    let interval = '';
     // const callbackId = requestAnimationFrame(updateVideoCanvas);
     if (props.isCamera) {
-      // setInterval(() => {
-      //   updateVideoCanvas();
-      // }, 100);
-      initWorker();
+      const worker = await initWorker();
+      interval = setInterval(() => {
+        captureCamera(worker);
+      }, 2000);
       startCamera();
     } else {
       // cancelAnimationFrame(callbackId);
@@ -127,14 +148,38 @@ export const ReadIsbn = (props) => {
       if (videoCanvas) {
         videoCanvas.remove();
       }
+
+      const video = document.querySelector('video');
+      if (video) {
+        video.remove();
+      }
     }
+    return () => clearInterval(interval);
   }, [props.isCamera]);
 
   return (
     <div id='vc' style={{ textAlign: 'center' }}>
-      <pre>
-        <h1>{text}</h1>
-      </pre>
+      {isbns.length
+        ? isbns.map((isbn, idx) => {
+            return (
+              <div key={idx} className={style.choice}>
+                <div className={style.isbn}>{isbn}</div>
+                <div>
+                  <Button
+                    variant='contained'
+                    color='primary'
+                    size='small'
+                    onClick={() => {
+                      handleChoice(isbn);
+                    }}
+                  >
+                    選択
+                  </Button>
+                </div>
+              </div>
+            );
+          })
+        : 'rrr'}
     </div>
   );
 };
