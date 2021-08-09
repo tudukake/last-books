@@ -4,7 +4,6 @@ import { createWorker } from 'tesseract.js';
 import { Button } from '@material-ui/core';
 
 export const ReadIsbn = (props) => {
-  const [text, setText] = useState('');
   const [isbns, setIsbns] = useState([]);
 
   const handleChoice = (id) => {
@@ -29,7 +28,6 @@ export const ReadIsbn = (props) => {
       video.setAttribute('contrals', '');
       video.setAttribute('autoplay', 'true');
       video.setAttribute('playsinline', '');
-      // video.setAttribute('style', 'display:none');
       document.getElementById('vc').appendChild(video);
     }
     return video;
@@ -99,7 +97,6 @@ export const ReadIsbn = (props) => {
     } = await worker.recognize(url);
 
     const textIsbn = choiceIsbn(text);
-    console.log(textIsbn);
     if (textIsbn.length) {
       setIsbns([...textIsbn]);
       videoCanvas.remove();
@@ -135,7 +132,6 @@ export const ReadIsbn = (props) => {
 
   useEffect(async () => {
     let interval = '';
-    // const callbackId = requestAnimationFrame(updateVideoCanvas);
     if (props.isCamera) {
       const worker = await initWorker();
       interval = setInterval(() => {
@@ -143,7 +139,6 @@ export const ReadIsbn = (props) => {
       }, 2000);
       startCamera();
     } else {
-      // cancelAnimationFrame(callbackId);
       const videoCanvas = document.getElementById('video_canvas');
       if (videoCanvas) {
         videoCanvas.remove();
@@ -179,7 +174,7 @@ export const ReadIsbn = (props) => {
               </div>
             );
           })
-        : 'rrr'}
+        : null}
     </div>
   );
 };
