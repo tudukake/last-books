@@ -1,13 +1,13 @@
 import { Button } from '@material-ui/core';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import style from 'src/components/ChoiceInput/ChoiceInput.module.css';
 
 export const ChoiceInput = (props) => {
   const [value, setVale] = useState(props.isbn);
 
-  const handleChoice = async (isbn) => {
-    props.returnIsbn(isbn);
-  };
+  const handleChoice = useCallback(async () => {
+    props.returnIsbn(value);
+  }, [value]);
 
   return (
     <div key={props.idx} className={style.choice}>
@@ -25,9 +25,7 @@ export const ChoiceInput = (props) => {
           variant='contained'
           color='primary'
           size='small'
-          onClick={() => {
-            handleChoice(props.isbn);
-          }}
+          onClick={handleChoice}
         >
           選択
         </Button>

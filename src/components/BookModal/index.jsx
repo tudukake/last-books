@@ -175,13 +175,17 @@ export const BookModal = (props) => {
     [isbn]
   );
 
-  useEffect(() => {
+  const clearData = () => {
     setId('');
     setIsbn('');
     setTitle('');
     setAuthor('');
     setPossession('');
     setImageUrl('');
+  };
+
+  useEffect(() => {
+    clearData();
 
     if (props.editBook) {
       const editIsbn = props.editBook.isbn ? props.editBook.isbn : '';
@@ -269,6 +273,7 @@ export const BookModal = (props) => {
                   isCamera={isCamera}
                   setIsCamera={setIsCamera}
                   setIsbnInfo={setIsbnInfo}
+                  clearData={clearData}
                 />
               </div>
               <TextField

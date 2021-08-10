@@ -99,6 +99,7 @@ export const ReadIsbn = (props) => {
     if (textIsbn.length) {
       setIsbns([...textIsbn]);
       videoCanvas.remove();
+      props.clearData();
       props.setIsCamera(false);
     }
   };
@@ -124,7 +125,7 @@ export const ReadIsbn = (props) => {
     await worker.loadLanguage('eng');
     await worker.initialize('eng');
     await worker.setParameters({
-      tessedit_char_whitelist: 'ISBNisbn0123456789',
+      tessedit_char_whitelist: '0123456789',
     });
     return worker;
   };
@@ -132,6 +133,7 @@ export const ReadIsbn = (props) => {
   useEffect(async () => {
     let interval = '';
     if (props.isCamera) {
+      setIsbns([]);
       const worker = await initWorker();
       interval = setInterval(() => {
         captureCamera(worker);
