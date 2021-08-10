@@ -126,7 +126,7 @@ export const BookModal = (props) => {
         props.refresh();
       }
     }
-  }, [title]);
+  }, [title, author, isbn, imageUrl]);
 
   // ISBNコードから情報を取得（楽天、oprebd）
   const setIsbnInfo = useCallback(
