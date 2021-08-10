@@ -137,10 +137,10 @@ export const BookModal = (props) => {
       console.log(dataRakuten);
       if (dataRakuten.size) {
         const data = dataRakuten.data[0];
-        const rakutenIsbn = data.isbn ?? null;
-        const rakutenTitle = data.title ?? null;
-        const rakutenAuthor = data.author ?? null;
-        const rakutenImageUrl = data.imageUrl ?? null;
+        const rakutenIsbn = data.isbn ? data.isbn : null;
+        const rakutenTitle = data.title ? data.title : null;
+        const rakutenAuthor = data.author ? data.author : null;
+        const rakutenImageUrl = data.imageUrl ? data.imageUrl : null;
         setIsbn(rakutenIsbn);
         setTitle(rakutenTitle);
         setAuthor(rakutenAuthor);
@@ -155,17 +155,17 @@ export const BookModal = (props) => {
           return;
         }
         if (dataOpenbd[0] == null) {
-          alert('不正なISBNの可能性があります。ご確認下さい。');
+          alert('このISBNコードの書籍は見つかりませんでした');
           return;
         }
 
         const summary = dataOpenbd[0].summary;
-        const searchIsbn = summary.isbn ?? null;
-        const searchTitle = summary.title ?? null;
+        const searchIsbn = summary.isbn ? summary.isbn : null;
+        const searchTitle = summary.title ? summary.title : null;
         const searchAuthor = summary.author
           ? summary.author.replace('／著', '')
           : null;
-        const searchImageUrl = summary.cover ?? null;
+        const searchImageUrl = summary.cover ? summary.cover : null;
         setIsbn(searchIsbn);
         setTitle(searchTitle);
         setAuthor(searchAuthor);
@@ -176,23 +176,30 @@ export const BookModal = (props) => {
   );
 
   useEffect(() => {
-    if (!props.editBook) return;
+    setId('');
+    setIsbn('');
+    setTitle('');
+    setAuthor('');
+    setPossession('');
+    setImageUrl('');
 
-    const editIsbn = props.editBook.isbn ? props.editBook.isbn : '';
-    const editTitle = props.editBook.title ? props.editBook.title : '';
-    const editAuthor = props.editBook.author ? props.editBook.author : '';
-    const editPossession = props.editBook.possession
-      ? props.editBook.possession
-      : '';
-    const editImgUrl = props.editBook.img_url ? props.editBook.img_url : '';
+    if (props.editBook) {
+      const editIsbn = props.editBook.isbn ? props.editBook.isbn : '';
+      const editTitle = props.editBook.title ? props.editBook.title : '';
+      const editAuthor = props.editBook.author ? props.editBook.author : '';
+      const editPossession = props.editBook.possession
+        ? props.editBook.possession
+        : '';
+      const editImgUrl = props.editBook.img_url ? props.editBook.img_url : '';
 
-    setId(props.editBook.id);
-    setIsbn(editIsbn);
-    setTitle(editTitle);
-    setAuthor(editAuthor);
-    setPossession(editPossession);
-    setImageUrl(editImgUrl);
-  }, [props.editBook]);
+      setId(props.editBook.id);
+      setIsbn(editIsbn);
+      setTitle(editTitle);
+      setAuthor(editAuthor);
+      setPossession(editPossession);
+      setImageUrl(editImgUrl);
+    }
+  }, [props.open]);
 
   return (
     <div>
