@@ -77,25 +77,6 @@ export const BookModal = (props) => {
     setIsCamera((prev) => !prev);
   }, []);
 
-  // ISBN検索（OpenBd）
-  const searchIsbn = useCallback(
-    async (isbn) => {
-      if (!isbn) return;
-      const res = await fetch('https://api.openbd.jp/v1/get?isbn=' + isbn);
-      const openbd = await res.json();
-      if (!openbd) {
-        alert('Could not get the data from openBD.');
-        return;
-      }
-      if (openbd[0] == null) {
-        alert('Invalid ISBN number. Please check.');
-        return;
-      }
-      const imageUrl = 'https://cover.openbd.jp/' + isbn + '.jpg';
-    },
-    [isbn]
-  );
-
   // 検索結果を反映
   const setSelectBook = (book) => {
     const searchIsbn = book.isbn === '' ? null : book.isbn;
@@ -145,7 +126,54 @@ export const BookModal = (props) => {
         props.refresh();
       }
     }
-  });
+  }, [title]);
+
+  // ISBNコードから情報を取得（楽天、oprebd）
+  const setIsbnInfo = useCallback(
+    async (isbn) => {
+      // Rakuten API
+      const resRakuten = await fetch('/api/rakuten?isbn=' + isbn);
+      const dataRakuten = await resRakuten.json();
+      console.log(dataRakuten);
+      if (dataRakuten.size) {
+        const data = dataRakuten.data[0];
+        const rakutenIsbn = data.isbn ?? null;
+        const rakutenTitle = data.title ?? null;
+        const rakutenAuthor = data.author ?? null;
+        const rakutenImageUrl = data.imageUrl ?? null;
+        setIsbn(rakutenIsbn);
+        setTitle(rakutenTitle);
+        setAuthor(rakutenAuthor);
+        setImageUrl(rakutenImageUrl);
+      } else {
+        // openbd API
+        const url = 'https://api.openbd.jp/v1/get?isbn=' + isbn;
+        const resOpenbd = await fetch(url);
+        const dataOpenbd = await resOpenbd.json();
+        if (!dataOpenbd) {
+          alert('このISBNコードの書籍は見つかりませんでした。');
+          return;
+        }
+        if (dataOpenbd[0] == null) {
+          alert('不正なISBNの可能性があります。ご確認下さい。');
+          return;
+        }
+
+        const summary = dataOpenbd[0].summary;
+        const searchIsbn = summary.isbn ?? null;
+        const searchTitle = summary.title ?? null;
+        const searchAuthor = summary.author
+          ? summary.author.replace('／著', '')
+          : null;
+        const searchImageUrl = summary.cover ?? null;
+        setIsbn(searchIsbn);
+        setTitle(searchTitle);
+        setAuthor(searchAuthor);
+        setImageUrl(searchImageUrl);
+      }
+    },
+    [isbn]
+  );
 
   useEffect(() => {
     if (!props.editBook) return;
@@ -230,7 +258,11 @@ export const BookModal = (props) => {
                 />
               </div>
               <div>
-                <ReadIsbn isCamera={isCamera} setIsCamera={setIsCamera} />
+                <ReadIsbn
+                  isCamera={isCamera}
+                  setIsCamera={setIsCamera}
+                  setIsbnInfo={setIsbnInfo}
+                />
               </div>
               <TextField
                 id='isbn'

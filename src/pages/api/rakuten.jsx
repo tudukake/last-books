@@ -38,24 +38,30 @@ const extractData = (item) => {
 const Rakuten = async (req, res) => {
   let url =
     'https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?applicationId=' +
-    process.env.RAKUTEN_APP_ID +
-    '&booksGenreId=001001';
+    process.env.RAKUTEN_APP_ID;
 
   // クエリパラメータからtitleを取得
   let { title } = req.query;
   if (title) {
     title = title.toString();
-    url += '&title=' + convertToUtf8(title);
+    url += '&booksGenreId=001001&title=' + convertToUtf8(title);
   }
 
   // クエリパラメタからauthorを取得
   let { author } = req.query;
   if (author) {
     author = author.toString();
-    url += '&author=' + convertToUtf8(author);
+    url += '&booksGenreId=001001&author=' + convertToUtf8(author);
   }
 
-  if (title || author) {
+  // クエリパラメタからisbnを取得
+  let { isbn } = req.query;
+  if (isbn) {
+    // isbn = isbn.toString();
+    url += '&isbn=' + isbn;
+  }
+
+  if (title || author || isbn) {
     let bookList = [];
     let count = -1;
     const response = await fetch(url);

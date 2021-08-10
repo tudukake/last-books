@@ -6,8 +6,8 @@ import { Button } from '@material-ui/core';
 export const ReadIsbn = (props) => {
   const [isbns, setIsbns] = useState([]);
 
-  const handleChoice = (id) => {
-    console.log(id);
+  const handleChoice = async (isbn) => {
+    props.setIsbnInfo(isbn);
   };
 
   const findOrCreateCaptureCanvas = () => {
