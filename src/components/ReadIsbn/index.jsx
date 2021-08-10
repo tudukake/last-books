@@ -1,12 +1,11 @@
-import style from 'src/components/ReadIsbn/ReadIsbn.module.css';
 import { useEffect, useState } from 'react';
 import { createWorker } from 'tesseract.js';
-import { Button } from '@material-ui/core';
+import { ChoiceInput } from 'src/components/ChoiceInput';
 
 export const ReadIsbn = (props) => {
   const [isbns, setIsbns] = useState([]);
 
-  const handleChoice = async (isbn) => {
+  const returnIsbn = async (isbn) => {
     props.setIsbnInfo(isbn);
   };
 
@@ -125,7 +124,7 @@ export const ReadIsbn = (props) => {
     await worker.loadLanguage('eng');
     await worker.initialize('eng');
     await worker.setParameters({
-      tessedit_char_whitelist: '0123456789',
+      tessedit_char_whitelist: 'ISBNisbn0123456789',
     });
     return worker;
   };
@@ -157,21 +156,7 @@ export const ReadIsbn = (props) => {
       {isbns.length
         ? isbns.map((isbn, idx) => {
             return (
-              <div key={idx} className={style.choice}>
-                <div className={style.isbn}>{isbn}</div>
-                <div>
-                  <Button
-                    variant='contained'
-                    color='primary'
-                    size='small'
-                    onClick={() => {
-                      handleChoice(isbn);
-                    }}
-                  >
-                    選択
-                  </Button>
-                </div>
-              </div>
+              <ChoiceInput key={idx} isbn={isbn} returnIsbn={returnIsbn} />
             );
           })
         : null}

@@ -92,7 +92,7 @@ export const BookModal = (props) => {
   // 追加 Or 修正
   const addEditStr = props.isEdit ? '修正' : '追加';
 
-  // 本追加 Or 修正
+  // 本の追加 Or 修正
   const upsertBook = useCallback(async () => {
     // タイトル未入力は無視
     if (!title) return;
