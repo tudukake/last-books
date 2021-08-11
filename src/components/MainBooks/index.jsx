@@ -6,16 +6,16 @@ import { BookList } from 'src/components/BookList';
 import { client } from 'src/libs/supabase';
 
 const kanaArr = [];
-kanaArr['あ'] = /[あ-おア-オヴ]/;
-kanaArr['か'] = /[か-こが-ごカ-コガ-ゴ]/;
-kanaArr['さ'] = /[さ-そざ-ぞサ-ソザ-ゾ]/;
-kanaArr['た'] = /[た-とだ-どタ-トダ-ド]/;
-kanaArr['な'] = /[な-のナ-ノ]/;
-kanaArr['は'] = /[は-ほぱ-ぽば-ぼハ-ホパ-ポバ-ボ]/;
-kanaArr['ま'] = /[ま-もマ-モ]/;
-kanaArr['や'] = /[や-よヤ-ヨ]/;
-kanaArr['ら'] = /[ら-ろラ-ロ]/;
-kanaArr['わ'] = /[わ-んワ-ン]/;
+kanaArr['あ'] = /[あ-おア-オヴAaEeIiOoUuVv]/;
+kanaArr['か'] = /[か-こが-ごカ-コガ-ゴCcGgKkQq]/;
+kanaArr['さ'] = /[さ-そざ-ぞサ-ソザ-ゾJjSsXxZz]/;
+kanaArr['た'] = /[た-とだ-どタ-トダ-ドDdTt]/;
+kanaArr['な'] = /[な-のナ-ノNn]/;
+kanaArr['は'] = /[は-ほぱ-ぽば-ぼハ-ホパ-ポバ-ボBbFfHhPp]/;
+kanaArr['ま'] = /[ま-もマ-モMm]/;
+kanaArr['や'] = /[や-よヤ-ヨYy]/;
+kanaArr['ら'] = /[ら-ろラ-ロLlRr]/;
+kanaArr['わ'] = /[わ-んワ-ンWw]/;
 
 export const MainBooks = (props) => {
   const [orgBooks, setOrgBooks] = useState([]);
