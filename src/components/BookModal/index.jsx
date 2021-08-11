@@ -112,14 +112,18 @@ export const BookModal = (props) => {
       possession: postPossession,
       img_url: postImageUrl,
     };
+
     if (props.isEdit) {
-      upsertData = { id: id, ...upsertData };
+      upsertData = { id: props.editBook.id, ...upsertData };
     }
+
+    console.log(upsertData);
 
     const { data, error } = await client.from('books').upsert([upsertData]);
 
     if (error) {
       alert(error);
+      console.log(error);
     } else {
       if (data) {
         props.closeModal();

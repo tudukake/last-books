@@ -57,7 +57,7 @@ const Rakuten = async (req, res) => {
   // クエリパラメタからisbnを取得
   let { isbn } = req.query;
   if (isbn) {
-    // isbn = isbn.toString();
+    isbn = isbn.toString();
     url += '&isbn=' + isbn;
   }
 
