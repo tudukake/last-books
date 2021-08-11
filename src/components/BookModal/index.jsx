@@ -40,7 +40,6 @@ export const BookModal = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [searchTxt, setSearchTxt] = useState('');
   const [searchList, setSearchList] = useState([]);
-  const [id, setId] = useState(null);
   const [isbn, setIsbn] = useState('');
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
@@ -180,7 +179,6 @@ export const BookModal = (props) => {
   );
 
   const clearData = () => {
-    setId('');
     setIsbn('');
     setTitle('');
     setAuthor('');
@@ -200,7 +198,6 @@ export const BookModal = (props) => {
         : '';
       const editImgUrl = props.editBook.img_url ? props.editBook.img_url : '';
 
-      setId(props.editBook.id);
       setIsbn(editIsbn);
       setTitle(editTitle);
       setAuthor(editAuthor);
@@ -298,6 +295,16 @@ export const BookModal = (props) => {
                 value={title}
                 onChange={(e) => {
                   setTitle(e.target.value);
+                }}
+              />
+              <TextField
+                id='title_kana'
+                label='タイトル カナ'
+                variant='outlined'
+                size='small'
+                value={title_kana}
+                onChange={(e) => {
+                  setTitleKana(e.target.value);
                 }}
               />
               <TextField
