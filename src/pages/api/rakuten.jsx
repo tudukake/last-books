@@ -20,12 +20,17 @@ const extractData = (item) => {
   titleString = moji(titleString).convert('ZE', 'HE').toString();
   titleString = moji(titleString).convert('ZS', 'HS').toString();
 
+  let titleKanaString = item.Item.titleKana;
+  titleKanaString = moji(titleKanaString).convert('ZE', 'HE').toString();
+  titleKanaString = moji(titleKanaString).convert('ZS', 'HS').toString();
+
   let authorString = item.Item.author;
   authorString = moji(authorString).convert('ZE', 'HE').toString();
   authorString = moji(authorString).convert('ZS', 'HS').reject('HS').toString();
 
   const data = {
     title: titleString,
+    titleKana: titleKanaString,
     author: authorString,
     publisherName: item.Item.publisherName,
     imageUrl: item.Item.largeImageUrl,

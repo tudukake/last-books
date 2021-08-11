@@ -42,6 +42,7 @@ export const BookModal = (props) => {
   const [searchList, setSearchList] = useState([]);
   const [isbn, setIsbn] = useState('');
   const [title, setTitle] = useState('');
+  const [titleKana, setTitleKana] = useState('');
   const [author, setAuthor] = useState('');
   const [possession, setPossession] = useState('');
   const [imageUrl, setImageUrl] = useState('');
@@ -80,10 +81,12 @@ export const BookModal = (props) => {
   const setSelectBook = (book) => {
     const searchIsbn = book.isbn === '' ? null : book.isbn;
     const searchTitle = book.title === '' ? null : book.title;
+    const searchTitleKana = book.titleKana === '' ? null : book.titleKana;
     const searchAuthor = book.author === '' ? null : book.author;
     const searchImageUrl = book.imageUrl === '' ? null : book.imageUrl;
     setIsbn(searchIsbn);
     setTitle(searchTitle);
+    setTitleKana(searchTitleKana);
     setAuthor(searchAuthor);
     setImageUrl(searchImageUrl);
   };
@@ -98,6 +101,7 @@ export const BookModal = (props) => {
 
     // supabaseに登録
     const postIsbn = isbn === '' ? null : isbn;
+    const postTitleKana = titleKana === '' ? null : titleKana;
     const postAuthor = author === '' ? null : author;
     const postPossession = possession === '' ? null : possession;
     const postImageUrl = imageUrl === '' ? null : imageUrl;
@@ -107,6 +111,7 @@ export const BookModal = (props) => {
       uid: props.uid,
       isbn: postIsbn,
       title: title,
+      title_kana: postTitleKana,
       author: postAuthor,
       possession: postPossession,
       img_url: postImageUrl,
@@ -115,8 +120,6 @@ export const BookModal = (props) => {
     if (props.isEdit) {
       upsertData = { id: props.editBook.id, ...upsertData };
     }
-
-    console.log(upsertData);
 
     const { data, error } = await client.from('books').upsert([upsertData]);
 
@@ -142,10 +145,12 @@ export const BookModal = (props) => {
         const data = dataRakuten.data[0];
         const rakutenIsbn = data.isbn ? data.isbn : null;
         const rakutenTitle = data.title ? data.title : null;
+        const rakutenTitleKana = data.titleKana ? data.titleKana : null;
         const rakutenAuthor = data.author ? data.author : null;
         const rakutenImageUrl = data.imageUrl ? data.imageUrl : null;
         setIsbn(rakutenIsbn);
         setTitle(rakutenTitle);
+        setTitleKana(rakutenTitleKana);
         setAuthor(rakutenAuthor);
         setImageUrl(rakutenImageUrl);
       } else {
@@ -163,14 +168,19 @@ export const BookModal = (props) => {
         }
 
         const summary = dataOpenbd[0].summary;
+        const kana =
+          dataOpenbd[0].onix.DescriptiveDetail.TitleDetail.TitleElement
+            .TitleText.collationkey;
         const searchIsbn = summary.isbn ? summary.isbn : null;
         const searchTitle = summary.title ? summary.title : null;
+        const searchTitleKana = kana ? kana : null;
         const searchAuthor = summary.author
           ? summary.author.replace('／著', '')
           : null;
         const searchImageUrl = summary.cover ? summary.cover : null;
         setIsbn(searchIsbn);
         setTitle(searchTitle);
+        setTitleKana(searchTitleKana);
         setAuthor(searchAuthor);
         setImageUrl(searchImageUrl);
       }
@@ -181,6 +191,7 @@ export const BookModal = (props) => {
   const clearData = () => {
     setIsbn('');
     setTitle('');
+    setTitleKana('');
     setAuthor('');
     setPossession('');
     setImageUrl('');
@@ -192,6 +203,9 @@ export const BookModal = (props) => {
     if (props.editBook) {
       const editIsbn = props.editBook.isbn ? props.editBook.isbn : '';
       const editTitle = props.editBook.title ? props.editBook.title : '';
+      const editTitleKana = props.editBook.title_kana
+        ? props.editBook.title_kana
+        : '';
       const editAuthor = props.editBook.author ? props.editBook.author : '';
       const editPossession = props.editBook.possession
         ? props.editBook.possession
@@ -200,6 +214,7 @@ export const BookModal = (props) => {
 
       setIsbn(editIsbn);
       setTitle(editTitle);
+      setTitleKana(editTitleKana);
       setAuthor(editAuthor);
       setPossession(editPossession);
       setImageUrl(editImgUrl);
@@ -298,11 +313,11 @@ export const BookModal = (props) => {
                 }}
               />
               <TextField
-                id='title_kana'
+                id='titleKana'
                 label='タイトル カナ'
                 variant='outlined'
                 size='small'
-                value={title_kana}
+                value={titleKana}
                 onChange={(e) => {
                   setTitleKana(e.target.value);
                 }}
