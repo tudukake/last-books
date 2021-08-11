@@ -13,6 +13,7 @@ export const MainBooks = (props) => {
     const { data, error } = await client
       .from('books')
       .select('*')
+      .order('title_kana')
       .order('title');
 
     if (!error && data) {

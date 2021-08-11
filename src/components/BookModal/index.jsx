@@ -132,7 +132,7 @@ export const BookModal = (props) => {
         props.refresh();
       }
     }
-  }, [title, author, isbn, imageUrl]);
+  }, [title, titleKana, author, isbn, imageUrl]);
 
   // ISBNコードから情報を取得（楽天、oprebd）
   const setIsbnInfo = useCallback(
@@ -140,7 +140,6 @@ export const BookModal = (props) => {
       // Rakuten API
       const resRakuten = await fetch('/api/rakuten?isbn=' + isbn);
       const dataRakuten = await resRakuten.json();
-      console.log(dataRakuten);
       if (dataRakuten.size) {
         const data = dataRakuten.data[0];
         const rakutenIsbn = data.isbn ? data.isbn : null;
