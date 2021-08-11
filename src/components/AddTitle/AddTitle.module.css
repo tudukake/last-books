@@ -22,4 +22,5 @@
 .rdo_navi:checked + label {
   background-color: #ff6f0f;
   color: #fff;
+  border-radius: 12px;
 }

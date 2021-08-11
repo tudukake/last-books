@@ -57,59 +57,69 @@ export const BookList = (props) => {
 
   return (
     <div className={style.box_list}>
-      {props.books.map((book) => {
-        return (
-          <div key={book.id} className={style.card}>
-            <div className={style.book_img}>
-              {book.img_url ? (
-                <Image
-                  src={book.img_url}
-                  alt='thumbnail'
-                  width={100}
-                  height={150}
-                />
-              ) : (
-                <Image src={noImage} alt='thumbnail' width={100} height={150} />
-              )}
-            </div>
-            <div className={style.book_info}>
-              <div>
-                <div className={style.book_title}>{book.title}</div>
-                <div>著者：{book.author}</div>
-                {/* <div>巻数：{book.volume}</div> */}
-                <div>所持：{book.possession}</div>
-                <div>ISBN：{book.isbn}</div>
+      {props.books.length ? (
+        props.books.map((book) => {
+          return (
+            <div key={book.id} className={style.card}>
+              <div className={style.book_img}>
+                {book.img_url ? (
+                  <Image
+                    src={book.img_url}
+                    alt='thumbnail'
+                    width={100}
+                    height={150}
+                  />
+                ) : (
+                  <Image
+                    src={noImage}
+                    alt='thumbnail'
+                    width={100}
+                    height={150}
+                  />
+                )}
               </div>
-              <div className={style.btns}>
-                <ThemeProvider theme={theme}>
-                  <Button
-                    variant='contained'
-                    color='primary'
-                    startIcon={<EditIcon />}
-                    size='small'
-                    onClick={() => {
-                      handleEdit(book.id);
-                    }}
-                  >
-                    修正
-                  </Button>
-                  <Button
-                    variant='contained'
-                    color='secondary'
-                    startIcon={<DeleteIcon />}
-                    size='small'
-                    onClick={() => {
-                      handleDelete(book.id, book.title);
-                    }}
-                  >
-                    削除
-                  </Button>
-                </ThemeProvider>
+              <div className={style.book_info}>
+                <div>
+                  <div className={style.book_title}>{book.title}</div>
+                  <div>著者：{book.author}</div>
+                  {/* <div>巻数：{book.volume}</div> */}
+                  <div>所持：{book.possession}</div>
+                  <div>ISBN：{book.isbn}</div>
+                </div>
+                <div className={style.btns}>
+                  <ThemeProvider theme={theme}>
+                    <Button
+                      variant='contained'
+                      color='primary'
+                      startIcon={<EditIcon />}
+                      size='small'
+                      onClick={() => {
+                        handleEdit(book.id);
+                      }}
+                    >
+                      修正
+                    </Button>
+                    <Button
+                      variant='contained'
+                      color='secondary'
+                      startIcon={<DeleteIcon />}
+                      size='small'
+                      onClick={() => {
+                        handleDelete(book.id, book.title);
+                      }}
+                    >
+                      削除
+                    </Button>
+                  </ThemeProvider>
+                </div>
               </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })
+      ) : (
+        <div className={style.center}>Nothing</div>
+      )}
+
       <BookModal
         uid={props.uid}
         isEdit={true}

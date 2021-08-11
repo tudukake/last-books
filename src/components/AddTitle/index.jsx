@@ -47,7 +47,12 @@ export const AddTitle = (props) => {
           <ul className={style.navies}>
             {NAVI.map((nav, idx) => {
               return (
-                <li key={idx}>
+                <li
+                  key={idx}
+                  onClick={() => {
+                    props.selectFilter(nav);
+                  }}
+                >
                   <input
                     type='radio'
                     id={'id_' + idx}
