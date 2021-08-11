@@ -17,7 +17,7 @@ export default function MyApp(props) {
   return (
     <React.Fragment>
       <Head>
-        <title>読んだ本</title>
+        <title>最後の本</title>
         <meta
           name='viewport'
           content='minimum-scale=1, initial-scale=1, width=device-width'

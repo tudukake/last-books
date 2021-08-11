@@ -1,7 +1,7 @@
 import style from 'src/components/Header/Header.module.css';
 import Link from 'next/link';
 import Image from 'next/image';
-import logo from 'public/logo_rb.png';
+import logo from 'public/logo.png';
 
 export const Header = () => {
   return (
@@ -12,7 +12,7 @@ export const Header = () => {
         </a>
       </Link>
       <Link href='/'>
-        <a className={style.logo}>読んだ本</a>
+        <a className={style.logo}>最後の本</a>
       </Link>
     </header>
   );
