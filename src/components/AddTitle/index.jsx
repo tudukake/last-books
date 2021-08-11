@@ -3,6 +3,7 @@ import { Fab } from '@material-ui/core';
 import { useCallback, useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import { BookModal } from 'src/components/BookModal';
+import { useEffect } from 'react';
 
 export const AddTitle = (props) => {
   // 五十音図
@@ -32,6 +33,10 @@ export const AddTitle = (props) => {
     setOpen(false);
   }, []);
 
+  useEffect(() => {
+    document.getElementById('id_0').checked = true;
+  }, []);
+
   return (
     <div>
       <div className={style.add_navi}>
@@ -42,8 +47,16 @@ export const AddTitle = (props) => {
           <ul className={style.navies}>
             {NAVI.map((nav, idx) => {
               return (
-                <li className={style.navi} key={idx}>
-                  {nav}
+                <li key={idx}>
+                  <input
+                    type='radio'
+                    id={'id_' + idx}
+                    name='rdo_navi'
+                    className={style.rdo_navi}
+                  />
+                  <label htmlFor={'id_' + idx} className={style.lbl_navi}>
+                    {nav}
+                  </label>
                 </li>
               );
             })}

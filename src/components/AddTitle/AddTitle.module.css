@@ -7,10 +7,19 @@
 
 .navies {
   display: flex;
-  gap: 12px;
+  gap: 2px;
 }
 
-.navi:hover {
-  cursor: pointer;
-  text-decoration: underline;
+.rdo_navi {
+  display: none;
+}
+
+.lbl_navi {
+  padding: 4px;
+}
+
+.lbl_navi:hover,
+.rdo_navi:checked + label {
+  background-color: #ff6f0f;
+  color: #fff;
 }
