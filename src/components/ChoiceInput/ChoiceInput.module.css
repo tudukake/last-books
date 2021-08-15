@@ -5,6 +5,10 @@
   margin-bottom: 4px;
 }
 
+.lbl {
+  line-height: 30px;
+}
+
 .isbn {
   text-align: left;
   padding: 4px;

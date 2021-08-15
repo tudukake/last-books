@@ -11,6 +11,7 @@ export const ChoiceInput = (props) => {
 
   return (
     <div key={props.idx} className={style.choice}>
+      <div className={style.lbl}>ISBN：</div>
       <div className={style.isbn}>
         <input
           type='text'
