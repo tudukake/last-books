@@ -292,16 +292,6 @@ export const BookModal = (props) => {
                 />
               </div>
               <TextField
-                id='isbn'
-                label='ISBN'
-                variant='outlined'
-                size='small'
-                value={isbn}
-                onChange={(e) => {
-                  setIsbn(e.target.value);
-                }}
-              />
-              <TextField
                 id='title'
                 label='タイトル'
                 variant='outlined'
@@ -341,6 +331,16 @@ export const BookModal = (props) => {
                 style={{ width: 120 }}
                 onChange={(e) => {
                   setPossession(e.target.value);
+                }}
+              />
+              <TextField
+                id='isbn'
+                label='ISBN'
+                variant='outlined'
+                size='small'
+                value={isbn}
+                onChange={(e) => {
+                  setIsbn(e.target.value);
                 }}
               />
             </div>
