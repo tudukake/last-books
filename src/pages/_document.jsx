@@ -6,7 +6,12 @@ export default class MyDocument extends Document {
   render() {
     return (
       <Html lang='ja'>
-        <Head></Head>
+        <Head>
+          <meta
+            property='og:description'
+            content='自分が持っている最新刊を登録し、同じ本を再購入しないようにするためのアプリです。'
+          />
+        </Head>
         <body>
           <Main />
           <NextScript />
