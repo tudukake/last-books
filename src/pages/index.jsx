@@ -37,7 +37,7 @@ const Home = () => {
         <Container>
           <Auth
             supabaseClient={client}
-            providers={['github', 'twitter']}
+            providers={['github', 'twitter', 'facebook']}
             socialColors={true}
           />
         </Container>
