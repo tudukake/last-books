@@ -117,7 +117,16 @@ export const BookList = (props) => {
           );
         })
       ) : (
-        <div className={style.center}>Nothing</div>
+        <div className={style.center}>
+          <br />
+          <p>左上の「＋」ボタンをから本を登録してください。</p>
+          <br />
+          <p>
+            同じ本を買ってしまわないように
+            <br />
+            自分が持っている最新刊を管理します。
+          </p>
+        </div>
       )}
 
       <BookModal
